@@ -10,8 +10,6 @@ const initialState = {
 }
 
 const data = (state = initialState.fileUploaded, action) => {
-    
-
     switch(action.type) {
         case "UPLOAD":
         console.log("uploaded data reducter", action)
@@ -19,11 +17,17 @@ const data = (state = initialState.fileUploaded, action) => {
                 ...state,
                 ...action.payload
             ]
+        case "UPDATE":
+            console.log("update reducer",  state[action.payload[0]][action.payload[1]]);
+            let arr = [...state];
+
+            return [
+                ...state
+            ]
         default:
         return [
             ...state
         ]
-
     }
 }
 

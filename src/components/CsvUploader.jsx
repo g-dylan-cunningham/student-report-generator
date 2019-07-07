@@ -2,6 +2,7 @@ import React from 'react';
 import { toJson } from '../utils/csvConverts';
 import { uploadFile } from '../actions';
 import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
 
 
 
@@ -18,6 +19,7 @@ class CsvUploader extends React.Component {
       event.preventDefault();
       toJson(this.fileInput.current.files[0]) 
         .then(function(data){
+          console.log("json data", data)
           // console.log('props', this.props, this)
           self.props.dispatchUploadFile(data);
       })
@@ -27,12 +29,28 @@ class CsvUploader extends React.Component {
     render() {
       return (
         <form onSubmit={this.handleSubmit}>
-          <label>
+          {/* <label>
             Upload file:
             <input type="file" ref={this.fileInput} />
-          </label>
+          </label> */}
+
+                <input
+                  // accept="*"
+                  // className={classes.input}
+                  id="raised-button-file"
+                  multiple
+                  type="file"
+                  ref={this.fileInput}
+                />
+                <label htmlFor="raised-button-file">
+                  <Button raised="true"  
+                  // className={classes.button}
+                  type="submit"
+                  >
+                    Upload
+                  </Button>
+                </label>
           <br />
-          <button type="submit">Submit</button>
         </form>
       );
     }

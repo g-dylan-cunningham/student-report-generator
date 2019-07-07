@@ -7,5 +7,12 @@ export const uploadFile = file => {
         type: "UPLOAD",
         payload: file
     }
-    
+}
+
+export const update = (row, column) => {
+    console.log("update action", row, column)
+    return {
+        type: "UPDATE",
+        payload: [row, column]
+    }
 }
