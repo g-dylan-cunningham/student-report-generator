@@ -2,11 +2,43 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { update } from '../actions';
 import DocumentSelector from './DocumentSelector'
+import DocumentConfigurer from './DocumentConfigurer';
+
+const styles = {
+    modal: {
+        width: "80%",
+        height: "80%",
+        top: "10%",
+        right: "10%",
+        position: "absolute",
+        margin: "auto",
+        backgroundColor: "white"
+    },
+    modalHeader: {
+        textAlign: "center",
+        fontSize: "35px",
+        fontVariant: "small-caps",
+        fontFamily: "roboto"
+    },
+    greyLayer: {
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "black",
+        opacity: "0.7",
+        top: "0",
+        zIndex: "-1"
+    }
+}
 
 class DocumentFull extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            configureField: {
+                open:false
+            }
+        };
         this.fieldClick = this.fieldClick.bind(this);
         this.updateField = this.updateField.bind(this);
         this.headingClick = this.headingClick.bind(this);
@@ -14,6 +46,13 @@ class DocumentFull extends React.Component {
 
     headingClick(field) {
         console.log(field);
+        this.setState({
+            configureField: {
+                open: true,
+                field: field,
+                range: 3
+            }
+        })
     }
 
     fieldClick(column, row) {
@@ -35,7 +74,7 @@ class DocumentFull extends React.Component {
 
     render() {
         let { data } = this.props;
-        let { selected } = this.state;
+        let { selected, configureField } = this.state;
         // console.log(selected)
         let headings = [];
         if(data.length) {
@@ -81,6 +120,8 @@ class DocumentFull extends React.Component {
                 }
                 </tbody>
                 </table>
+                <DocumentConfigurer open={configureField.open} field={configureField.field}/>
+                    
             </React.Fragment>
         )
     }
