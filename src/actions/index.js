@@ -26,4 +26,10 @@ export const update = (row, column, value) => {
     }
 }
 
-// export const configureField = ()
+export const configureScoringVerbiage = (file) => {
+    console.log("configure Field action")
+    return {
+        type: "CONFIGURE_SCORING_VERBIAGE",
+        payload: file
+    }
+}

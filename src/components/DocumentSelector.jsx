@@ -5,20 +5,17 @@ import { update } from '../actions';
 class DocumentSelect extends React.Component {
     constructor(props) {
       super(props);
+      this.state = {};
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    state = {value: '1'};
-
     componentDidMount() {
-        // console.log("mounted", this.props.value)
         let isScore = true;
         let isDisabled = false;
         if(isNaN(this.props.value)) {
             isScore = false;
         }
-        // console.log("filed", this.props.field)
         if(this.props.field === "id") {
             isDisabled = true;
         }
@@ -36,10 +33,8 @@ class DocumentSelect extends React.Component {
     handleSubmit(event, value) {
         let {field, row} = this.props;
         this.props.close();
-        // debugger
-    //   alert('Your favorite flavor is: ' + this.state.value);
-      event.preventDefault();
-      this.props.update(field, row, value)
+        event.preventDefault();
+        this.props.update(field, row, value)
     }
   
     render() {
@@ -49,18 +44,22 @@ class DocumentSelect extends React.Component {
       return (
         <form onSubmit={(event) => this.handleSubmit(event, this.state.value)}>
             {
+                // handles number/score fields
                 isScore && !isDisabled
                 ? <select value={this.state.value} onChange={this.handleChange}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
+                // handles info fields like name pronoun etc
                 : !isScore && !isDisabled
                 ? <input value={this.state.value} onChange={this.handleChange} />
+                // handles uneditable fields like id
                 : <div>{this.state.value}</div>
             }
             
           {
+              // show button only if it's editable
             !isDisabled 
             ? <input type="submit" value="Submit" />
             : <div></div>

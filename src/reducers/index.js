@@ -39,9 +39,24 @@ const data = (state = initialState.fileUploaded, action) => {
                 ...newState
             }
         case "GENERATE_DEFAULT_VERBIAGE":
-            console.log("GENERATE_DEFAULT_VERBIAGE reducter", action.payload)
+            
+            let keys = Object.keys(action.payload[0])
+            let verbiageArr = keys.filter(key => {
+                if(key !== "id" && key !== "name" && key !== "pronoun") {
+                    return key;
+                }
+                }).map(key => {
+                return  {[key]: {
+                        1: "is poor",
+                        2: "is Okay",
+                        3: "is good"
+                    }}
+                }
+            )
+            // console.log("GENERATE_DEFAULT_VERBIAGE reducter", verbiageArr, keys, action.payload)
+            newState.verbiage = verbiageArr;
             return {
-                ...state
+                ...newState
             }
         default: 
             return {
