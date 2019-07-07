@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const styles = {
     modal: {
@@ -32,25 +33,51 @@ class DocumentConfigurer extends React.Component {
         super(props);
         this.state = {
             quantity: 3,
-            textValue: ""
+            textValue: "",
+            rows: []
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.field !== this.props.field) {
+            let rows = [];
+            let map = {
+                1: "poor",
+                2: "ok",
+                3: "great"
+            }
+            
+            for(let i = 1; i <= this.state.quantity; i++) {
+                let msg = this.props.field + " is " + map[i]
+                rows.push({
+                    score: i,
+                    text: msg
+                })
+            }
+            this.setState({
+                rows: rows
+            })
         }
     }
 
     updateField(e, text, field, number) {
         e.preventDefault();
         console.log(text, field, number)
+        this.setState({editMode: null})
+    }
+
+    onChangeHandler(e,i,text) {
+        let rows = this.state.rows;
+        // debugger
+        rows[i]["text"] = e.target.value;
+        console.log(rows)
+        this.setState({rows: rows})
     }
 
     render() {
-       let { open, field } = this.props;
-       let { quantity, editMode, textValue } = this.state;
-        let rows = [];
-        for(let i = 1; i <= quantity; i++) {
-            rows.push({
-                score: i,
-                text: "asfasdsd"
-            })
-        }
+       let { open, field, closeLayer } = this.props;
+       let { quantity, editMode, textValue, rows } = this.state;
+
 
         if(!open) {
             return <React.Fragment></React.Fragment>
@@ -66,13 +93,13 @@ class DocumentConfigurer extends React.Component {
                            rows.map(row =>
                             <li key={row.score}>
                             <span>
-                            {row.score}  
+                            {row.score + ":   "}
                             </span>
 
                             {
                             editMode === row.score 
                             ? <span>
-                                <textarea defaultValue={row.text} onChange={e=>this.setState({textValue: e.target.value})}/>
+                                <textarea defaultValue={row.text} onChange={(e,i,text)=>this.onChangeHandler(e,(row.score -1 ),(e.target.value))}/>
                                 <button onClick={e => this.updateField(e, textValue, field, row.score)} >update</button>
                             </span>
                             
@@ -86,7 +113,7 @@ class DocumentConfigurer extends React.Component {
                         }
                     </ul>
                 </div> 
-                <div style={styles.greyLayer}></div>
+                <div style={styles.greyLayer} onClick={closeLayer}></div>
             </React.Fragment>
             )
         }
@@ -96,5 +123,8 @@ class DocumentConfigurer extends React.Component {
 
 }
 
+const mapDispatchToProps = dispatch => ({
 
-export default DocumentConfigurer;
+})
+
+export default connect(null, mapDispatchToProps)(DocumentConfigurer);

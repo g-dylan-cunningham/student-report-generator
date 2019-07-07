@@ -42,6 +42,7 @@ class DocumentFull extends React.Component {
         this.fieldClick = this.fieldClick.bind(this);
         this.updateField = this.updateField.bind(this);
         this.headingClick = this.headingClick.bind(this);
+        this.closeLayer = this.closeLayer.bind(this);
     }
 
     headingClick(field) {
@@ -70,6 +71,12 @@ class DocumentFull extends React.Component {
     updateField(column, row, value, event) {
         event.preventDefault();
         // this.props.update(row, column)
+    }
+
+    closeLayer() {
+        let configField = this.state.configureField;
+        configField["open"] = false;
+        this.setState({configureField: configField});
     }
 
     render() {
@@ -120,7 +127,7 @@ class DocumentFull extends React.Component {
                 }
                 </tbody>
                 </table>
-                <DocumentConfigurer open={configureField.open} field={configureField.field}/>
+                <DocumentConfigurer closeLayer={this.closeLayer} open={configureField.open} field={configureField.field}/>
                     
             </React.Fragment>
         )
