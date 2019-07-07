@@ -9,10 +9,10 @@ export const uploadFile = file => {
     }
 }
 
-export const update = (row, column) => {
-    console.log("update action", row, column)
+export const update = (row, column, value) => {
+    console.log("update action", row, column, value)
     return {
         type: "UPDATE",
-        payload: [row, column]
+        payload: [row, column, value]
     }
 }

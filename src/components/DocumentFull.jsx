@@ -9,28 +9,34 @@ class DocumentFull extends React.Component {
         this.state = {};
         this.fieldClick = this.fieldClick.bind(this);
         this.updateField = this.updateField.bind(this);
+        this.headingClick = this.headingClick.bind(this);
     }
 
-    fieldClick(field, column, row) {
-        console.log(column, row)
-        
+    headingClick(field) {
+        console.log(field);
+    }
 
-        // function setAsSelected(column, row) {
+    fieldClick(column, row) {
+        if(this.state.selected === [row, column]) {
+            this.setState({
+                selected: null
+            })
+        } else {
             this.setState({
                 selected: [row, column]
             })
-        // }
-        // setAsSelected(column, row)
+        }
     }
 
-    updateField(column, row, value) {
-        this.props.update(row, column)
+    updateField(column, row, value, event) {
+        event.preventDefault();
+        // this.props.update(row, column)
     }
 
     render() {
         let { data } = this.props;
         let { selected } = this.state;
-        console.log(selected)
+        // console.log(selected)
         let headings = [];
         if(data.length) {
             headings = Object.keys(data[0])
@@ -43,7 +49,10 @@ class DocumentFull extends React.Component {
                     {
                         headings.length 
                         ? headings.map(heading => 
-                            <th key={heading}>{heading}</th>)
+                            <th 
+                                key={heading}
+                                onClick={() => this.headingClick(heading)}
+                            >{heading}</th>)
                         : <th></th>
                     }
                     </tr>
@@ -56,9 +65,9 @@ class DocumentFull extends React.Component {
                                 {
                                     headings.length
                                     ? headings.map((field, i) =>
-                                        <td onClick={() => this.fieldClick(field, j, i) } key={i}>
+                                        <td onClick={() => this.fieldClick(j, i) } key={i}>
                                             {(selected && selected.length && selected[0] === i && selected[1] === j) 
-                                            ? <DocumentSelector numFields={3} select={this.updateField}/>
+                                            ? <DocumentSelector numFields={3} row={j} field={field} value={row[field]} close={() => this.fieldClick(i,j)}/>
                                             : row[field]}
                                         
                                         </td>
@@ -81,8 +90,8 @@ const mapStateToProps = (state) => ({
     data: state.data
 })
 
-const mapDispatchToProps = dispatch => ({
-    update: (row, column) => dispatch(update(row, column))
-})
+// const mapDispatchToProps = dispatch => ({
+//     update: (row, column) => dispatch(update(row, column))
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentFull);
+export default connect(mapStateToProps, null)(DocumentFull);
