@@ -5,30 +5,14 @@ import DocumentSelector from './DocumentSelector'
 import DocumentConfigurer from './DocumentConfigurer';
 
 const styles = {
-    modal: {
-        width: "80%",
-        height: "80%",
-        top: "10%",
-        right: "10%",
-        position: "absolute",
-        margin: "auto",
-        backgroundColor: "white"
-    },
-    modalHeader: {
-        textAlign: "center",
-        fontSize: "35px",
-        fontVariant: "small-caps",
-        fontFamily: "roboto"
-    },
-    greyLayer: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "black",
-        opacity: "0.7",
-        top: "0",
-        zIndex: "-1"
+    heading: {
+        cursor: "pointer",
+        "&:hover" : {
+            color: "blue"
+        }
     }
+    
+
 }
 
 class DocumentFull extends React.Component {
@@ -40,7 +24,6 @@ class DocumentFull extends React.Component {
             }
         };
         this.fieldClick = this.fieldClick.bind(this);
-        this.updateField = this.updateField.bind(this);
         this.headingClick = this.headingClick.bind(this);
         this.closeLayer = this.closeLayer.bind(this);
     }
@@ -68,11 +51,6 @@ class DocumentFull extends React.Component {
         }
     }
 
-    updateField(column, row, value, event) {
-        event.preventDefault();
-        // this.props.update(row, column)
-    }
-
     closeLayer() {
         let configField = this.state.configureField;
         configField["open"] = false;
@@ -82,9 +60,9 @@ class DocumentFull extends React.Component {
     render() {
         let { data } = this.props;
         let { selected, configureField } = this.state;
-        // console.log(selected)
         let headings = [];
-        if(data.length) {
+        // debugger
+        if(data && data.length) {
             headings = Object.keys(data[0])
         }
         return (
@@ -95,7 +73,7 @@ class DocumentFull extends React.Component {
                     {
                         headings.length 
                         ? headings.map(heading => 
-                            <th 
+                            <th style={styles.heading}
                                 key={heading}
                                 onClick={() => this.headingClick(heading)}
                             >{heading}</th>)
@@ -135,11 +113,7 @@ class DocumentFull extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.data
+    data: state.data.fileUploaded
 })
-
-// const mapDispatchToProps = dispatch => ({
-//     update: (row, column) => dispatch(update(row, column))
-// })
 
 export default connect(mapStateToProps, null)(DocumentFull);

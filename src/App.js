@@ -11,7 +11,6 @@ function App() {
     <div className="App">
       <CsvUploader />
       <DocumentFull />
-      {/* <TableFull /> */}
     </div>
   );
 }

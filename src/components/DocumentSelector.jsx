@@ -13,8 +13,19 @@ class DocumentSelect extends React.Component {
 
     componentDidMount() {
         // console.log("mounted", this.props.value)
+        let isScore = true;
+        let isDisabled = false;
+        if(isNaN(this.props.value)) {
+            isScore = false;
+        }
+        // console.log("filed", this.props.field)
+        if(this.props.field === "id") {
+            isDisabled = true;
+        }
         this.setState({
-            value: this.props.value
+            value: this.props.value,
+            isScore: isScore,
+            isDisabled: isDisabled 
         })
     }
   
@@ -33,18 +44,27 @@ class DocumentSelect extends React.Component {
   
     render() {
         let {field, row} = this.props;
-        let {value} = this.state;
-        console.log("value", value)
+        let {value, isScore, isDisabled} = this.state;
+        // console.log("value", value, isScore, isDisabled)
       return (
         <form onSubmit={(event) => this.handleSubmit(event, this.state.value)}>
-          <label>
-            <select value={this.state.value} onChange={this.handleChange}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </label>
-          <input type="submit" value="Submit" />
+            {
+                isScore && !isDisabled
+                ? <select value={this.state.value} onChange={this.handleChange}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                : !isScore && !isDisabled
+                ? <input value={this.state.value} onChange={this.handleChange} />
+                : <div>{this.state.value}</div>
+            }
+            
+          {
+            !isDisabled 
+            ? <input type="submit" value="Submit" />
+            : <div></div>
+          }
         </form>
       );
     }
