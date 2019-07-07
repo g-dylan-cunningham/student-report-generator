@@ -39,20 +39,21 @@ class DocumentConfigurer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.field !== this.props.field) {
+        let { verbiage, field } = this.props;
+        if(prevProps.field !== field) {
+            
             let rows = [];
-            let map = {
-                1: "poor",
-                2: "ok",
-                3: "great"
-            }
+            let map = verbiage[field];
             
             for(let i = 1; i <= this.state.quantity; i++) {
-                let msg = this.props.field + " is " + map[i]
-                rows.push({
-                    score: i,
-                    text: msg
-                })
+                if(map && map[i]) {
+                    let msg = field + " " + map[i]
+                    rows.push({
+                        score: i,
+                        text: msg
+                    })
+                }
+                
             }
             this.setState({
                 rows: rows
@@ -60,24 +61,25 @@ class DocumentConfigurer extends React.Component {
         }
     }
 
-    updateField(e, text, field, number) {
+    updateField(e, field, number) {
         e.preventDefault();
-        console.log(text, field, number)
+        let { verbiage } = this.props
+        let newVerbiage = {...verbiage};
+        newVerbiage[field][number] = this.state.rows[number-1].text;
+        console.log("newVer", newVerbiage)
+        
         this.setState({editMode: null})
     }
 
     onChangeHandler(e,i,text) {
         let rows = this.state.rows;
-        // debugger
         rows[i]["text"] = e.target.value;
-        console.log(rows)
         this.setState({rows: rows})
     }
 
     render() {
-       let { open, field, closeLayer } = this.props;
+       let { open, field, closeLayer, verbiage } = this.props;
        let { quantity, editMode, textValue, rows } = this.state;
-
 
         if(!open) {
             return <React.Fragment></React.Fragment>
@@ -100,7 +102,7 @@ class DocumentConfigurer extends React.Component {
                             editMode === row.score 
                             ? <span>
                                 <textarea defaultValue={row.text} onChange={(e,i,text)=>this.onChangeHandler(e,(row.score -1 ),(e.target.value))}/>
-                                <button onClick={e => this.updateField(e, textValue, field, row.score)} >update</button>
+                                <button onClick={e => this.updateField(e, field, row.score)} >update</button>
                             </span>
                             
                             : <span onClick={() => this.setState({editMode: row.score})}>
@@ -123,8 +125,12 @@ class DocumentConfigurer extends React.Component {
 
 }
 
+const mapStateToProps = state => ({
+    verbiage: state.data.verbiage
+})
+
 const mapDispatchToProps = dispatch => ({
 
 })
 
-export default connect(null, mapDispatchToProps)(DocumentConfigurer);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentConfigurer);

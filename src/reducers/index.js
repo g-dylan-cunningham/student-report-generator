@@ -8,7 +8,7 @@ import { combineReducers } from 'redux';
 
 const initialState = {
     fileUploaded: [],
-    verbiage: []
+    verbiage: {}
 }
 
 const data = (state = initialState.fileUploaded, action) => {
@@ -39,22 +39,30 @@ const data = (state = initialState.fileUploaded, action) => {
                 ...newState
             }
         case "GENERATE_DEFAULT_VERBIAGE":
-            
             let keys = Object.keys(action.payload[0])
             let verbiageArr = keys.filter(key => {
                 if(key !== "id" && key !== "name" && key !== "pronoun") {
                     return key;
                 }
-                }).map(key => {
-                return  {[key]: {
+                })
+                
+            let verbiageObj = {}
+                for(let i = 0; i < verbiageArr.length; i++ ) {
+                    let keyName = verbiageArr[i] 
+                    verbiageObj[verbiageArr[i]] = {
                         1: "is poor",
                         2: "is Okay",
                         3: "is good"
-                    }}
+                    }
                 }
-            )
-            // console.log("GENERATE_DEFAULT_VERBIAGE reducter", verbiageArr, keys, action.payload)
-            newState.verbiage = verbiageArr;
+            newState.verbiage = verbiageObj;
+            return {
+                ...newState
+            }
+        case "CONFIGURE_SCORING_VERBIAGE":
+            console.log("CONFIGURE_SCORING_VERBIAGE", action.payload)
+            let newVerbiage = {...action.payload};
+            newState.verbiage = newVerbiage;
             return {
                 ...newState
             }
