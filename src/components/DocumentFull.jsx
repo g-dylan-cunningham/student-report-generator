@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { update } from '../actions';
+import { convertToCsv } from '../utils/csvConverts';
 import DocumentSelector from './DocumentSelector'
 import DocumentConfigurer from './DocumentConfigurer';
 
@@ -26,6 +27,7 @@ class DocumentFull extends React.Component {
         this.fieldClick = this.fieldClick.bind(this);
         this.headingClick = this.headingClick.bind(this);
         this.closeLayer = this.closeLayer.bind(this);
+        this.generateReport = this.generateReport.bind(this);
         // this.download = this.download.bind(this);
     }
 
@@ -50,7 +52,7 @@ class DocumentFull extends React.Component {
                 selected: [row, column]
             })
         }
-        this.download("asfs.txt", "asdfasfasdfasdfasdfasd")
+        // this.download("asfs.txt", "asdfasfasdfasdfasdfasd")
     }
 
     closeLayer() {
@@ -59,6 +61,29 @@ class DocumentFull extends React.Component {
         this.setState({configureField: configField});
     }
 
+    generateReport(fields) {
+        let { data, verbiage } = this.props;
+        // console.log(data, verbiage)
+
+        let report = [...data].map(row => {
+
+            fields.map(((field, i) => {
+                var fieldVerbiage = verbiage[field];
+                var score = [row[field]];
+                // debugger
+                if(fieldVerbiage && fieldVerbiage[score]) {
+                    console.log(fieldVerbiage[score])
+                    row[field] = fieldVerbiage[score];
+                }
+                
+            })
+            
+        )
+        return row;
+        })
+        // convertToCsv(report)
+        console.log("report", report)
+    }
     // download(filename, text) {
     //     var element = document.createElement('a');
     //     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -121,13 +146,16 @@ class DocumentFull extends React.Component {
                 </tbody>
                 </table>
                 <DocumentConfigurer closeLayer={this.closeLayer} open={configureField.open} field={configureField.field}/>
+                <button onClick={() => this.generateReport(headings)}>Generate Report</button>
+            
             </React.Fragment>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    data: state.data.fileUploaded
+    data: state.data.fileUploaded,
+    verbiage: state.data.verbiage
 })
 
 export default connect(mapStateToProps, null)(DocumentFull);

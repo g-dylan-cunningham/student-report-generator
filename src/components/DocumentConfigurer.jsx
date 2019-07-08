@@ -47,10 +47,9 @@ class DocumentConfigurer extends React.Component {
             
             for(let i = 1; i <= this.state.quantity; i++) {
                 if(map && map[i]) {
-                    let msg = field + " " + map[i]
                     rows.push({
                         score: i,
-                        text: msg
+                        text: map[i]
                     })
                 }
                 
@@ -67,7 +66,7 @@ class DocumentConfigurer extends React.Component {
         let newVerbiage = {...verbiage};
         newVerbiage[field][number] = this.state.rows[number-1].text;
         console.log("newVer", newVerbiage)
-        
+
         this.setState({editMode: null})
     }
 
