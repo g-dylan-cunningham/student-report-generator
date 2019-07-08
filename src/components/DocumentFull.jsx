@@ -26,6 +26,7 @@ class DocumentFull extends React.Component {
         this.fieldClick = this.fieldClick.bind(this);
         this.headingClick = this.headingClick.bind(this);
         this.closeLayer = this.closeLayer.bind(this);
+        // this.download = this.download.bind(this);
     }
 
     headingClick(field) {
@@ -49,6 +50,7 @@ class DocumentFull extends React.Component {
                 selected: [row, column]
             })
         }
+        this.download("asfs.txt", "asdfasfasdfasdfasdfasd")
     }
 
     closeLayer() {
@@ -57,6 +59,19 @@ class DocumentFull extends React.Component {
         this.setState({configureField: configField});
     }
 
+    // download(filename, text) {
+    //     var element = document.createElement('a');
+    //     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    //     element.setAttribute('download', filename);
+      
+    //     element.style.display = 'none';
+    //     document.body.appendChild(element);
+      
+    //     element.click();
+      
+    //     document.body.removeChild(element);
+    //   }
+      
     render() {
         let { data } = this.props;
         let { selected, configureField } = this.state;
@@ -106,7 +121,6 @@ class DocumentFull extends React.Component {
                 </tbody>
                 </table>
                 <DocumentConfigurer closeLayer={this.closeLayer} open={configureField.open} field={configureField.field}/>
-                    
             </React.Fragment>
         )
     }
