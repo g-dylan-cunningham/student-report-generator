@@ -125,7 +125,7 @@ class DocumentConfigurer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    verbiage: state.data.verbiage
+    verbiage: state.verbiage.verbiage
 })
 
 const mapDispatchToProps = dispatch => ({

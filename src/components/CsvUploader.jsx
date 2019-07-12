@@ -1,6 +1,6 @@
 import React from 'react';
 import { toJson } from '../utils/csvConverts';
-import { uploadFile, generateVerbiageFromDefault } from '../actions';
+import { uploadFile } from '../actions';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
@@ -65,7 +65,6 @@ class CsvUploader extends React.Component {
     return {
       dispatchUploadFile: file => {
         dispatch(uploadFile(file));
-        dispatch(generateVerbiageFromDefault(file));
       }
     }
   }

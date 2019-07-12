@@ -8,7 +8,8 @@ import reducer from './reducers'
 import logger from 'redux-logger'
 const store = createStore(
   reducer,
-  applyMiddleware(logger)
+  applyMiddleware(logger),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
 console.log("store", store.getState())
